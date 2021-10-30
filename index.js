@@ -25,12 +25,20 @@ async function run() {
     await client.connect();
     const database = client.db("traveler");
     const packageCollection = database.collection("packages");
+    const orderCollection = database.collection("orders");
 
     //GET API
     app.get("/packages", async (req, res) => {
       const cursor = packageCollection.find({});
       const packages = await cursor.toArray();
       res.send(packages);
+    });
+
+    //GET ORDER API
+    app.get("/orders", async (req, res) => {
+      const cursor = orderCollection.find({});
+      const orders = await cursor.toArray();
+      res.send(orders);
     });
 
     //GET Single Package
@@ -48,6 +56,16 @@ async function run() {
       console.log("Hit the post api", package);
 
       const result = await packageCollection.insertOne(package);
+      console.log(result);
+      res.json(result);
+    });
+
+    //POST ORDERS API
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      console.log("Hit the post order api", order);
+
+      const result = await orderCollection.insertOne(order);
       console.log(result);
       res.json(result);
     });
