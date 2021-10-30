@@ -1,5 +1,7 @@
 const express = require("express");
 const { MongoClient } = require("mongodb");
+const ObjectId = require("mongodb").ObjectId;
+
 const cors = require("cors");
 require("dotenv").config();
 
@@ -23,6 +25,22 @@ async function run() {
     await client.connect();
     const database = client.db("traveler");
     const packageCollection = database.collection("packages");
+
+    //GET API
+    app.get("/packages", async (req, res) => {
+      const cursor = packageCollection.find({});
+      const packages = await cursor.toArray();
+      res.send(packages);
+    });
+
+    //GET Single Package
+    app.get("/packages/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("getitting id", id);
+      const query = { _id: ObjectId(id) };
+      const package = await packageCollection.findOne(query);
+      res.json(package);
+    });
 
     //POST API
     app.post("/packages", async (req, res) => {
