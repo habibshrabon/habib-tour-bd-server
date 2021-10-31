@@ -34,7 +34,7 @@ async function run() {
       res.send(packages);
     });
 
-    //GET ORDER API
+    //GET ORDERS API
     app.get("/orders", async (req, res) => {
       const cursor = orderCollection.find({});
       const orders = await cursor.toArray();
@@ -88,5 +88,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("Running Genius server on port", port);
+  console.log("Running Traveler server on port", port);
 });
